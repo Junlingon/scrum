@@ -1,5 +1,6 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
+import { useEffect } from 'react';
 import Login from './pages/login';
 import Register from './pages/register';
 import Layout from './pages/components/layout';
@@ -9,6 +10,15 @@ import Epic from './pages/epic';
 
 
 function App() {
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      navigate('/project')
+    }
+  })
+
   return (
     <div className="App">
       <Routes>
