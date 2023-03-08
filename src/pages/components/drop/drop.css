@@ -25,7 +25,7 @@
     /* background: rgba(197, 248, 207, 0.4); */
     border-radius: 6px;
     /* flex: 1; */
-    background-image: url(../../../../public/task-back4.gif);
+    /* background-image: url(../../../../public/task-back4.gif); */
 }
 
 
@@ -52,7 +52,7 @@
     /* border: 2px solid rgb(103, 97, 90); */
     border-radius: 4px;
     margin-bottom: 10px;
-    background-image: url(../../../../public/task-back.gif);
+    /* background-image: url(../../../../public/task-back.gif); */
 }
 
 /* .task_card_name {

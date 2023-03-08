@@ -18,13 +18,13 @@ function DropCp(props) {
                     "task_id": '7adakhkhc'
                 },
                 {
-                    "name": 'asdad',
+                    "name": 'asdd',
                     "type": "bug",
                     "owner": 'azer',
                     "task_id": '7adakhkh6'
                 },
                 {
-                    "name": 'asdad',
+                    "name": 'asd444ad',
                     "type": "bug",
                     "owner": 'azer',
                     "task_id": '7adakhkh4'
@@ -35,19 +35,19 @@ function DropCp(props) {
             "kanban_key": '222',
             'task': [
                 {
-                    "name": 'asdad',
+                    "name": 'a7sda77d',
                     "type": "bug",
                     "owner": 'azer',
                     "task_id": '7adakh8hc'
                 },
                 {
-                    "name": 'asdad',
+                    "name": 'asd54ad',
                     "type": "bug",
                     "owner": 'azer',
                     "task_id": '7ada6hkh6'
                 },
                 {
-                    "name": 'asdad',
+                    "name": 'asda22d',
                     "type": "bug",
                     "owner": 'azer',
                     "task_id": '7adkh4kh4'
@@ -58,7 +58,7 @@ function DropCp(props) {
 
     return (
         <DragDropContext
-            onDragEnd={() => { }}
+            // onDragEnd={() => { }}
             className="drag_container"
         >
             <Droppable direction="horizontal" droppableId="droppable-kanban" type="kanban">
