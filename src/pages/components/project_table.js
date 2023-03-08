@@ -65,6 +65,7 @@ const data = [{
     collect: false,
     name: '测试数据',
     organization: '研发部门',
+    owner: '李苗苗',
     created: '2022-12-01'
 }]
 

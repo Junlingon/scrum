@@ -1,5 +1,5 @@
 import ProjectTable from './components/project_table'
-// import CreateProjectModal from './components/create_project_modal'
+import CreateProjectModal from './components/create_project_modal'
 import ProjectSearch from './components/project_search'
 
 function Project() {
@@ -16,7 +16,7 @@ function Project() {
             <div className='project_table_wrap'>
                 <ProjectTable />
             </div>
-            {/* <CreateProjectModal /> */}
+            <CreateProjectModal />
         </div>
     )
 }
