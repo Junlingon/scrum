@@ -73,7 +73,13 @@ function ProjectTable() {
 
     return (
         <>
-            <Table rowKey="created" className='project_table_css' pagination={false} dataSource={data} columns={columns} />
+            <Table
+                rowKey="created"
+                className='project_table_css'
+                pagination={false}
+                dataSource={data}
+                columns={columns}
+            />
             <Pagination />
         </>
     )

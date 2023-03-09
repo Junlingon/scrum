@@ -5,7 +5,7 @@ function ProjectSearch() {
     const [form] = Form.useForm();
 
     return (
-        <Form layout="inline" form={form} >
+        <Form layout="inline" name='ProjectSearch' form={form} >
             <Form.Item
                 name="name"
                 style={{ width: 180 }}
