@@ -1,64 +1,33 @@
 import { DragDropContext } from 'react-beautiful-dnd';
-import { Droppable } from 'react-beautiful-dnd';
-import { Draggable } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import TaskDrop from './task_drop';
 import './drop.css'
 import { Button, Input } from 'antd';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { kanban_order, kanban_selector } from '../../../redux/slice/drop';
+import { useDispatch } from 'react-redux';
 
-function DropCp(props) {
-    const drag_data = [
-        {
-            "kanban_key": '111',
-            'task': [
-                {
-                    "name": 'asdad',
-                    "type": "bug",
-                    "owner": 'azer',
-                    "task_id": '7adakhkhc'
-                },
-                {
-                    "name": 'asdd',
-                    "type": "bug",
-                    "owner": 'azer',
-                    "task_id": '7adakhkh6'
-                },
-                {
-                    "name": 'asd444ad',
-                    "type": "bug",
-                    "owner": 'azer',
-                    "task_id": '7adakhkh4'
-                }
-            ]
-        },
-        {
-            "kanban_key": '222',
-            'task': [
-                {
-                    "name": 'a7sda77d',
-                    "type": "bug",
-                    "owner": 'azer',
-                    "task_id": '7adakh8hc'
-                },
-                {
-                    "name": 'asd54ad',
-                    "type": "bug",
-                    "owner": 'azer',
-                    "task_id": '7ada6hkh6'
-                },
-                {
-                    "name": 'asda22d',
-                    "type": "bug",
-                    "owner": 'azer',
-                    "task_id": '7adkh4kh4'
-                }
-            ]
+function DropCp() {
+    const drag_data = useSelector(kanban_selector)
+    const dispath = useDispatch()
+
+    function onDragEnd(e) {
+        // console.log(e)
+        if (!e.destination) {
+            return
         }
-    ]
+        if (e.type === 'kanban') {
+            dispath(kanban_order({
+                source: e.source.index,
+                destination: e.destination.index
+            }))
+        }
+    }
 
     return (
         <DragDropContext
-            // onDragEnd={() => { }}
+            onDragEnd={onDragEnd}
             className="drag_container"
         >
             <Droppable direction="horizontal" droppableId="droppable-kanban" type="kanban">
