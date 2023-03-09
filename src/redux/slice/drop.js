@@ -63,14 +63,28 @@ export const DropSlice = createSlice({
     name: 'drop',
     initialState,
     reducers: {
+        //看板之间的移动
         kanban_order: (state, action) => {
+            console.log(state.kanban_data)
             reorderList(
                 state.kanban_data,
                 action.payload.source,
                 action.payload.destination
             )
         },
-        task_same_order: () => { },
+        //同一个看板之间任务的移动
+        task_same_order: (state, action) => {
+            console.log(state.kanban_data)
+            const SomeOrder = state.kanban_data.find((item) => {
+                return item.kanban_key === action.payload.kanban_key
+            })
+            reorderList(
+                SomeOrder.task,
+                action.payload.source,
+                action.payload.destination
+            )
+        },
+        //不同看板之间任务的移动
         task_diff_order: () => { },
         add_kanban: () => { },
         add_task: () => { }

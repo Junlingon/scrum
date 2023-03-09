@@ -5,12 +5,12 @@ import './drop.css'
 import { Button, Input } from 'antd';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { kanban_order, kanban_selector } from '../../../redux/slice/drop';
+import { kanban_order, kanban_selector, task_same_order, task_diff_order } from '../../../redux/slice/drop';
 import { useDispatch } from 'react-redux';
 
 function DropCp() {
     const drag_data = useSelector(kanban_selector)
-    const dispath = useDispatch()
+    const dispatch = useDispatch()
 
     function onDragEnd(e) {
         // console.log(e)
@@ -18,10 +18,27 @@ function DropCp() {
             return
         }
         if (e.type === 'kanban') {
-            dispath(kanban_order({
+            dispatch(kanban_order({
                 source: e.source.index,
                 destination: e.destination.index
             }))
+        }
+        //kanban类型
+        if (e.type === 'task') {
+            if (e.source.droppableId === e.destination.droppableId) {
+                dispatch(task_same_order({
+                    kanban_key: e.destination.droppableId,
+                    source: e.source.index,
+                    destination: e.destination.index,
+                }))
+            } else {
+                dispatch(task_diff_order({
+                    source_kanban_key: e.source.droppableId,
+                    destination_kanban_key: e.destination.droppableId,
+                    source: e.source.index,
+                    destination: e.destination.index,
+                }))
+            }
         }
     }
 
