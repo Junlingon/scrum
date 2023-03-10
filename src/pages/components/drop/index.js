@@ -5,7 +5,7 @@ import './drop.css'
 import { Button, Input } from 'antd';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { kanban_order, kanban_selector, task_same_order, task_diff_order } from '../../../redux/slice/drop';
+import { kanban_order, kanban_selector, task_same_order, task_diff_order, add_task } from '../../../redux/slice/drop';
 import { useDispatch } from 'react-redux';
 
 function DropCp() {
@@ -42,6 +42,17 @@ function DropCp() {
         }
     }
 
+    function new_task_click(kanban_key) {
+        dispatch(add_task({
+            task: {
+                "name": '新增',
+                "type": "bug",
+                "owner": 'azaaer',
+                "task_id": '3adakhkhc'
+            },
+            kanban_key,
+        }))
+    }
     return (
         <DragDropContext
             onDragEnd={onDragEnd}
@@ -69,7 +80,7 @@ function DropCp() {
                                                 <h1>{item.kanban_key}</h1>
                                                 <TaskDrop task={item} />
                                                 <Button className='new_task_btn' onClick={() => {
-                                                    // new_task_click(item.kanban_key)
+                                                    new_task_click(item.kanban_key)
                                                 }} type="primary" ghost>
                                                     新建task
                                                 </Button>

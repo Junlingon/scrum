@@ -65,16 +65,15 @@ export const DropSlice = createSlice({
     reducers: {
         //看板之间的移动
         kanban_order: (state, action) => {
-            console.log(state.kanban_data)
             reorderList(
                 state.kanban_data,
                 action.payload.source,
                 action.payload.destination
             )
+            console.log(state.kanban_data);
         },
         //同一个看板之间任务的移动
         task_same_order: (state, action) => {
-            console.log(state.kanban_data)
             const SomeOrder = state.kanban_data.find((item) => {
                 return item.kanban_key === action.payload.kanban_key
             })
@@ -85,9 +84,59 @@ export const DropSlice = createSlice({
             )
         },
         //不同看板之间任务的移动
-        task_diff_order: () => { },
-        add_kanban: () => { },
-        add_task: () => { }
+        task_diff_order: (state, action) => {
+
+            const source_kanban = state.kanban_data.find((item) => {
+                return item.kanban_key === action.payload.source_kanban_key
+            })
+
+            const destination_kanban = state.kanban_data.find((item) => {
+                return item.kanban_key === action.payload.destination_kanban_key
+            })
+
+            const source_task = source_kanban.task;
+            const destination_task = destination_kanban.task;
+
+            const result_source = source_task[action.payload.source]
+            source_task.splice(action.payload.source, 1);
+            destination_task.splice(action.payload.destination, 0, result_source)
+        },
+        add_kanban: (state, action) => {
+            // immer
+            const kanban_key = action.payload.kanban_key;
+            state.kanban_data.push({
+                kanban_key,
+                task: []
+            })
+        },
+        add_task: (state, action) => {
+            const kanban_key = action.payload.kanban_key;
+            const task_data = action.payload.task;
+
+            const kanban = state.kanban_data.find((item) => {
+                return item.kanban_key === kanban_key
+            });
+
+            kanban.task.push(task_data)
+        },
+        update_task: (state, action) => {
+            const kanban_key = action.payload.kanban_key;
+            let task_data = action.payload.task;
+            const task_id = action.payload.task_id;
+
+            const kanban = state.kanban_data.find((item) => {
+                return item.kanban_key === kanban_key
+            });
+
+            const index = kanban.task.findIndex((item) => {
+                return item.task_id === task_id
+            })
+
+            // 补充id
+            task_data.task_id = kanban.task.task_id
+
+            kanban.task[index] = task_data
+        }
     }
 })
 
