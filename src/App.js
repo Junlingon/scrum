@@ -7,20 +7,38 @@ import Layout from './pages/components/layout';
 import Project from './pages/project';
 import Kanban from './pages/kanban';
 import Epic from './pages/epic';
-
+import { notification } from 'antd'
+import EventBus from './util/event'
 
 function App() {
   const location = useLocation()
   const navigate = useNavigate()
 
+  const [api, contextHolder] = notification.useNotification()
+
+  //错误弹窗提示方法
+  const openNotification = (msg) => {
+    api.error({
+      message: msg,
+      placement: 'topRight'
+    })
+  }
+
   useEffect(() => {
     if (location.pathname === '/') {
       navigate('/project')
     }
+
+    EventBus.on("global_error_tips", function (msg) {
+      // console.log('发生错误了')
+      openNotification(msg)
+    })
   })
 
   return (
     <div className="App">
+      {/* 这是antd弹窗占位符，一个固定写法、 */}
+      {contextHolder}
       <Routes>
         <Route path='/login' element={<Login></Login>}></Route>
         <Route path='/register' element={<Register></Register>}></Route>
