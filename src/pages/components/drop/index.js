@@ -1,12 +1,10 @@
-import { DragDropContext } from 'react-beautiful-dnd';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import TaskDrop from './task_drop';
 import './drop.css'
 import { Button, Input } from 'antd';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { kanban_order, kanban_selector, task_same_order, task_diff_order, add_task } from '../../../redux/slice/drop';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { kanban_order, kanban_selector, task_same_order, task_diff_order, add_task, update_kanban_async } from '../../../redux/slice/drop';
 
 function DropCp() {
     const drag_data = useSelector(kanban_selector)
@@ -22,6 +20,8 @@ function DropCp() {
                 source: e.source.index,
                 destination: e.destination.index
             }))
+            //更新拖拽后的数据
+            dispatch(update_kanban_async())
         }
         //kanban类型
         if (e.type === 'task') {
@@ -31,6 +31,8 @@ function DropCp() {
                     source: e.source.index,
                     destination: e.destination.index,
                 }))
+                //更新拖拽后的数据
+                dispatch(update_kanban_async())
             } else {
                 dispatch(task_diff_order({
                     source_kanban_key: e.source.droppableId,
@@ -38,6 +40,8 @@ function DropCp() {
                     source: e.source.index,
                     destination: e.destination.index,
                 }))
+                //更新拖拽后的数据
+                dispatch(update_kanban_async())
             }
         }
     }

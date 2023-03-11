@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_project_async } from '../redux/slice/project';
 import { select_current_project } from '../redux/slice/kanban';
+import { set_project_id } from '../redux/slice/drop';
 
 function Kanban() {
     const params = useParams()
@@ -14,6 +15,7 @@ function Kanban() {
 
     useEffect(() => {
         dispatch(get_project_async(project_id))
+        dispatch(set_project_id(project_id))
     }, [project_id])
 
     return (

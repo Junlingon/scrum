@@ -1,7 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from '../../util/http'
 
 const initialState = {
     kanban_data: [],
+    project_id: ''
 }
 
 // 数据位置互换
@@ -11,6 +13,16 @@ function reorderList(list, starIndex, endIndex) {
     result.splice(endIndex, 0, removed)
     return result
 }
+//调接口更新拖拽后的数据
+export const update_kanban_async = createAsyncThunk(
+    'drop/update',
+    async (action, state) => {
+        const store = state.getState()
+        const kanban_data = store.drop.kanban_data
+        const project_id = store.drop.project_id
+        const res = await axios.put(`/api/projects/${project_id}/kanban`, kanban_data)
+    }
+)
 
 export const DropSlice = createSlice({
     name: 'drop',
@@ -19,6 +31,10 @@ export const DropSlice = createSlice({
         //获取最新数据
         set_kanban_data: (state, action) => {
             state.kanban_data = action.payload
+        },
+        //把当前project的id存储在store中
+        set_project_id: (state, action) => {
+            state.project_id = action.payload
         },
         //看板之间的移动
         kanban_order: (state, action) => {
@@ -106,6 +122,7 @@ export const {
     task_diff_order,
     add_kanban,
     add_task,
-    set_kanban_data
+    set_kanban_data,
+    set_project_id
 } = DropSlice.actions;
 export default DropSlice.reducer;//这里是reducer 没有s
