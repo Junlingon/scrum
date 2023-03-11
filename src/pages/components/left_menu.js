@@ -15,7 +15,7 @@ function LeftMenu() {
 
     useEffect(() => {
         set_active(key_arr[3])
-    }, [])
+    }, [key_arr])
 
     const items = [{
         label: '看板',

@@ -13,7 +13,7 @@ function Header() {
     return (
         <div className='header_wrap_body'>
             <button className='header_button' onClick={home_click}>
-                <img className="header_logo" src={logo}></img>
+                <img className="header_logo" src={logo} alt='logo'></img>
                 {/* <h2 >scrum项目管理系统</h2> */}
             </button>
             <ProjectPopover />

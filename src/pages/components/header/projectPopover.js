@@ -1,4 +1,4 @@
-import { Divider, List, Popover, Typography } from 'antd'
+import { List, Popover } from 'antd'
 
 function ProjectPopover() {
 
