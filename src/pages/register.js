@@ -18,9 +18,7 @@ function Register() {
 
     return (
         <LoginWrap>
-            <Form
-                form={form}
-            >
+            <Form form={form}>
                 <div className='login_box_header'>
                     <button className='switch'>请注册</button>
                 </div>
