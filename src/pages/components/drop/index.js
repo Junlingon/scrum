@@ -4,7 +4,7 @@ import './drop.css'
 import { Button, Input } from 'antd';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { kanban_order, kanban_selector, task_same_order, task_diff_order, add_task, update_kanban_async } from '../../../redux/slice/drop';
+import { kanban_order, kanban_selector, task_same_order, task_diff_order, add_task, update_kanban_async, add_kanban } from '../../../redux/slice/drop';
 
 function DropCp() {
     const drag_data = useSelector(kanban_selector)
@@ -44,6 +44,19 @@ function DropCp() {
                 dispatch(update_kanban_async())
             }
         }
+    }
+
+
+    function input_keydown(e) {
+        const value = e.target.value.trim();
+        if (!value) {
+            return;
+        }
+        dispatch(add_kanban({
+            kanban_key: value
+        }))
+        dispatch(update_kanban_async())
+        e.target.value = ''
     }
 
     function new_task_click(kanban_key) {
@@ -99,7 +112,7 @@ function DropCp() {
                 )}
             </Droppable>
             <div className='kanban_drag_wrap'>
-                <Input placeholder="新建看板名称" />
+                <Input placeholder="新建看板名称" onPressEnter={input_keydown} />
             </div>
         </DragDropContext>
     )
