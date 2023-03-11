@@ -1,5 +1,8 @@
 import { Button, Space, Table, Pagination } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { getProjectListAsync, select_project_list } from '../../redux/slice/project';
+import { useEffect } from 'react'
 
 const columns = [
     {
@@ -61,16 +64,14 @@ const columns = [
     },
 ];
 
-const data = [{
-    collect: false,
-    name: '测试数据',
-    organization: '研发部门',
-    owner: '李苗苗',
-    created: '2022-12-01'
-}]
-
 function ProjectTable() {
+    const dispatch = useDispatch()
 
+    useEffect(() => {
+        dispatch(getProjectListAsync())
+    }, [])
+
+    const data = useSelector(select_project_list)
     return (
         <>
             <Table
