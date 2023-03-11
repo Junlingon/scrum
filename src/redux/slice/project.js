@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, } from '@reduxjs/toolkit';
 import axios from '../../util/http';
 import { set_kanban_data } from './drop';
+import { set_current_project } from './kanban';
 
 const initialState = {
     list: [], //项目列表
@@ -24,6 +25,8 @@ export const get_project_async = createAsyncThunk(
         const res = await axios.get(`/api/project/${action}`);
         const kanban = res.data.data.kanban;
         state.dispatch(set_kanban_data(kanban))
+        // 设置当前的project对象
+        state.dispatch(set_current_project(res.data.data))
     }
 )
 
