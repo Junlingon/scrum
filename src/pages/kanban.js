@@ -1,8 +1,19 @@
 import SearchForm from './components/search_form'
 import DropCp from './components/drop'
-// import CreateTaskModal from './components/create_task_modal'
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { get_project_async } from '../redux/slice/project';
+
 
 function Kanban() {
+    const params = useParams()
+    const project_id = params.id
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(get_project_async(project_id))
+    }, [project_id])
 
     return (
         <div className='kanban_body'>
@@ -15,7 +26,6 @@ function Kanban() {
             <div className='drop_wrap'>
                 <DropCp />
             </div>
-            {/* <CreateTaskModal /> */}
         </div>
     )
 }
