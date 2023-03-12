@@ -1,8 +1,40 @@
 import { Button, Space, Table, Pagination } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { getProjectListAsync, select_project_list } from '../../redux/slice/project';
-import { useEffect } from 'react'
+import { getProjectListAsync, select_project_list, set_current_page, change_list, set_project_modal } from '../../redux/slice/project';
+import { useEffect } from 'react';
+import dayjs from 'dayjs';
+import { store } from '../../redux/store'
+import axios from '../../util/http'
+
+function hand_collect_click(record) {
+    const data = {
+        ...record,
+        collect: !record.collect
+    }
+    const dispatch = store.dispatch;
+    dispatch(change_list({
+        _id: record._id,
+        data
+    }))
+    // 跟服务器同步
+    axios.put(`/api/projects/${record._id}`, {
+        collect: data.collect
+    })
+}
+
+function edit_click(id) {
+    store.dispatch(set_project_modal({
+        show: true,
+        type: 'edit',
+        id
+    }))
+}
+
+async function del_click(id) {
+    await axios.delete(`/api/projects/${id}`);
+    store.dispatch(getProjectListAsync())
+}
 
 const columns = [
     {
@@ -11,7 +43,9 @@ const columns = [
         key: 'collect',
         render: (text, record) => {
             return (
-                <div className='iconfont icon-shoucang shoucang-item' style={{ color: text ? '#dfd50c' : '' }}></div>
+                <div onClick={() => {
+                    hand_collect_click(record)
+                }} className='iconfont icon-shoucang shoucang-item' style={{ color: text ? '#dfd50c' : '' }}></div>
             )
         },
         width: '10%'
@@ -46,7 +80,7 @@ const columns = [
         dataIndex: 'created',
         render: (_, record) => (
             <Space size="middle">
-                <div>创建时间</div>
+                <div>{dayjs(record.created).format('DD/MM/YYYY')}</div>
             </Space>
         ),
     },
@@ -56,8 +90,12 @@ const columns = [
         dataIndex: 'created',
         render: (_, record) => (
             <>
-                <Button type='primary'>编辑</Button>
-                <Button type='danger'>删除</Button>
+                <Button type='primary' onClick={() => {
+                    edit_click(record._id)
+                }}>编辑</Button>
+                <Button type='danger' onClick={() => {
+                    del_click(record._id)
+                }}>删除</Button>
 
             </>
         ),
@@ -72,6 +110,11 @@ function ProjectTable() {
     }, [])
 
     const data = useSelector(select_project_list)
+
+    function onChange(page) {
+        dispatch(set_current_page(page));
+        dispatch(getProjectListAsync())
+    }
     return (
         <>
             <Table
@@ -81,7 +124,11 @@ function ProjectTable() {
                 dataSource={data}
                 columns={columns}
             />
-            <Pagination />
+            <Pagination
+                onChange={onChange}
+                total={data.total}
+                current={data.current_page}
+            />
         </>
     )
 }
