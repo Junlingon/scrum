@@ -1,7 +1,7 @@
 import { Button, Space, Table, Pagination } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { getProjectListAsync, select_project_list, set_current_page, change_list, set_project_modal } from '../../redux/slice/project';
+import { getProjectListAsync, select_project_list, select_project_list_data, set_current_page, change_list, set_project_modal } from '../../redux/slice/project';
 import { useEffect } from 'react';
 import dayjs from 'dayjs';
 import { store } from '../../redux/store'
@@ -110,6 +110,7 @@ function ProjectTable() {
     }, [])
 
     const data = useSelector(select_project_list)
+    const total = useSelector(select_project_list_data).total
 
     function onChange(page) {
         dispatch(set_current_page(page));
@@ -126,7 +127,7 @@ function ProjectTable() {
             />
             <Pagination
                 onChange={onChange}
-                total={data.total}
+                total={total}
                 current={data.current_page}
             />
         </>
