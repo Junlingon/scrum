@@ -69,7 +69,6 @@ export const getOrgsAsync = createAsyncThunk(
     'project/get_orgs',
     async () => {
         const response = await axios.get('/api/organization');
-        // console.log('response',response)
         return response.data;
     }
 )
@@ -90,11 +89,8 @@ export const projectSlice = createSlice({
         change_list: (state, action) => {
             const { _id, data } = action.payload;
             const index = state.list.findIndex((item) => {
-                // debugger
-                // console.log(item)
                 return item._id === _id
             })
-            // debugger
             state.list[index] = data;
         },
         set_search_query: (state, action) => {
@@ -131,7 +127,6 @@ export const projectSlice = createSlice({
             state.task_types = data;
         },
         [getOrgsAsync.fulfilled]: (state, res) => {
-            // console.log('res', res)
             const data = res.payload.data;
             state.organizations = data;
         },

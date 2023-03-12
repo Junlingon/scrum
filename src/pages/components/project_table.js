@@ -55,7 +55,6 @@ const columns = [
         dataIndex: 'name',
         key: 'name',
         render: (text, data) => {
-            // console.log(text, data)
             return <NavLink to={`/project/${data._id}/kanban`}>{text}</NavLink>
         },
         sorter: (a, b) => a.title - b.title,

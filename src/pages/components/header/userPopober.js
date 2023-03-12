@@ -13,14 +13,13 @@ function UserPopover() {
                 {
                     users.map((item) => {
                         return (
-                            <List.Item key={item.username} className="user_listItem">
-                                <p>{item.username}</p>
+                            <List.Item key={'user_' + item.username} className="user_listItem">
+                                <p key={item.username}>{item.username}</p>
                             </List.Item>
                         )
                     })
                 }
             </List>
-            {/* <Divider /> */}
         </div>
     )
 

@@ -68,13 +68,6 @@ function TaskDrop(props) {
                             </Draggable>
                         )
                     })}
-                    {/* <Input allowClear className='task_input' data-kanban-key={task.kanban_key} size='small' placeholder="新建任务" onPressEnter={handle_enter} /> */}
-                    {/* <div>+新建任务</div> */}
-                    {/* <Button className='new_task_btn' type="primary" onClick={() => {
-                        new_task_click(task.kanban_key)
-                    }} ghost>
-                        新建task
-                    </Button> */}
                     {provided.placeholder}
                 </div>
             )}

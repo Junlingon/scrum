@@ -17,7 +17,6 @@ function CreateEpicModal() {
         const form_data = await form.validateFields()
         if (form_data) {
             const epic_name = form_data.epic_name;
-
             // 在服务端更新了数据
             const res = await axios.post(`/api/epic/${project_id}`, {
                 epic_name
