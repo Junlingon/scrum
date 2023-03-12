@@ -1,8 +1,112 @@
 import { Button, Input, Select, Form } from 'antd'
+import axios from '../../util/http';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { set_kanban_data } from '../../redux/slice/drop';
+import { select_users } from '../../redux/slice/project';
+import { select_epic_list } from '../../redux/slice/kanban';
+import { useEffect } from 'react';
 
 function SearchForm() {
+    const dispatch = useDispatch()
+    const [search_params] = useSearchParams()
+
+    const [form] = Form.useForm();
+    const search_epic = search_params.get('epic');
+    const users = useSelector(select_users);
+    const params = useParams()
+    const epic_list = useSelector(select_epic_list) || []
+
+    const project_id = params.id
+
+    useEffect(() => {
+        // 看有没有epic查询参数，有的话就查询数据
+        if (search_epic) {
+            form.setFieldValue('epic', search_epic);
+            // search({
+            //     epic: search_epic
+            // })
+
+            // 问题解决，但是不彻底
+            setTimeout(() => {
+                search({
+                    epic: search_epic
+                })
+            }, 500);
+        }
+    }, [])
+
+
+    function render_users_options(arr) {
+        return arr.map((item) => {
+            return <Select.Option key={item.username} value={item.username}>{item.username}</Select.Option>
+        })
+    }
+
+    const epic_options = epic_list.map((key) => {
+        return {
+            value: key,
+            label: key
+        }
+    })
+
+    function reset() {
+        form.resetFields()
+    }
+
+    async function search(form_data) {
+        const res = await axios.get(`/api/project/${project_id}`);
+
+        let drop_data = res.data.data.kanban;
+        let fliter_drop_data = drop_data.map((item) => {
+            let task_list = item.task;
+            task_list = task_list.filter((task) => {
+                let isName = true;
+                let isType = true;
+                let isOwner = true;
+                let isEpic = true;
+
+                if (form_data.name) {
+                    if (task.name.indexOf(form_data.name) < 0) {
+                        isName = false
+                    }
+                }
+                if (form_data.owner) {
+                    if (task.owner !== form_data.owner) {
+                        isOwner = false
+                    }
+                }
+                if (form_data.type) {
+                    if (task.type !== form_data.type) {
+                        isType = false
+                    }
+                }
+
+                if (form_data.epic) {
+                    if (task.epic !== form_data.epic) {
+                        isEpic = false
+                    }
+                }
+
+                return isName && isType && isOwner && isEpic
+            })
+            return {
+                ...item,
+                task: task_list
+            }
+        })
+        dispatch(set_kanban_data(fliter_drop_data))
+    }
+
+    async function search_click() {
+        const form_data = await form.validateFields()
+        if (form_data) {
+            await search(form_data)
+        }
+    }
+
     return (
-        <Form layout="inline" >
+        <Form layout="inline" form={form} >
             <Form.Item
                 name="name"
                 style={{ width: 200 }}
@@ -14,12 +118,9 @@ function SearchForm() {
                 name="owner"
                 style={{ width: 200 }}
             >
-                <Select
-                    className='search_wrap_select'
-
-                >
+                <Select className='search_wrap_select'>
                     {
-                        // render_users_options(users)
+                        render_users_options(users)
                     }
                 </Select>
             </Form.Item>
@@ -49,11 +150,11 @@ function SearchForm() {
             >
                 <Select
                     className='search_wrap_select'
-                // options={epic_options}
+                    options={epic_options}
                 />
             </Form.Item>
-            <Button type="">重置</Button>
-            <Button type="primary">查询</Button>
+            <Button onClick={reset} type="">重置</Button>
+            <Button onClick={search_click} type="primary">查询</Button>
         </Form>
     )
 }
