@@ -3,7 +3,7 @@ import { Form, Input, Select } from 'antd';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { add_task, update_kanban_async, kanban_selector, update_task } from '../../redux/slice/drop';
-import { select_task_modal_show, select_task_modal_status, set_task_modal } from '../../redux/slice/kanban';
+import { select_task_modal_show, select_task_modal_status, set_task_modal, select_epic_list } from '../../redux/slice/kanban';
 import { select_task_types, select_users } from '../../redux/slice/project';
 
 function CreateTaskModal() {
@@ -14,6 +14,7 @@ function CreateTaskModal() {
     const users = useSelector(select_users)
     const task_types = useSelector(select_task_types);
     const kanban_data = useSelector(kanban_selector)
+    const epic_list = useSelector(select_epic_list) || []
 
     const [form] = Form.useForm();
 
@@ -88,6 +89,13 @@ function CreateTaskModal() {
         })
     }
 
+    const epic_options = epic_list.map((key) => {
+        return {
+            value: key,
+            label: key
+        }
+    })
+
     return (
         <Modal
             title={type === 'create' ? '创建任务' : '编辑任务'}
@@ -130,7 +138,11 @@ function CreateTaskModal() {
                     label="epic"
                     name="epic"
                 >
-                    <Select className='search_wrap_select'>epic_options</Select>
+                    <Select
+                        // style={{width: '300px'}}
+                        className='search_wrap_select'
+                        options={epic_options}
+                    />
                 </Form.Item>
             </Form>
         </Modal>
