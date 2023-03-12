@@ -41,7 +41,7 @@ export default function EpicList() {
                         description={
                             <div style={{ fontSize: '16px' }}>
                                 <div>开始时间：暂无</div>
-                                <div>结束时间: 暂无</div>
+                                <div>结束时间：暂无</div>
                             </div>
                         }
                     />

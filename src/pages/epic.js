@@ -15,15 +15,13 @@ function Epic() {
         dispatch(set_ecpic_create_modal_show(true))
     }
 
-    console.log('epic render')
-
     const params = useParams()
     const project_id = params.id
 
     useEffect(() => {
         dispatch(get_project_async(project_id))
         dispatch(set_project_id(project_id))
-    }, [params.id])
+    }, [dispatch, project_id])
 
     return (
         <div className='epic_body'>

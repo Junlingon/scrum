@@ -78,8 +78,6 @@ export const projectSlice = createSlice({
     initialState,
     reducers: {
         set_project_modal: (state, action) => {
-            // state.modal_show = action.payload
-
             state.project_modal = {
                 ...state.project_modal,
                 ...action.payload

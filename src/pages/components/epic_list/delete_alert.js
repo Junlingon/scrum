@@ -9,9 +9,7 @@ export default function DeleteAlert() {
             okText: '确定',
             cancelText: '取消',
             title: '确定删除该项目组吗？',
-            onOk() {
-                // return mutateAsync({ id: kanban.id })
-            },
+            onOk() { },
         })
     }
 
