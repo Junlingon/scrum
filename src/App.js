@@ -9,10 +9,13 @@ import Kanban from './pages/kanban';
 import Epic from './pages/epic';
 import { notification } from 'antd'
 import EventBus from './util/event'
+import { getUsersAsync } from './redux/slice/project';
+import { useDispatch } from 'react-redux';
 
 function App() {
   const location = useLocation()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const [api, contextHolder] = notification.useNotification()
 
@@ -33,6 +36,8 @@ function App() {
       // console.log('发生错误了')
       openNotification(msg)
     })
+
+    dispatch(getUsersAsync())
   })
 
   return (

@@ -6,6 +6,7 @@ import { set_current_project } from './kanban';
 const initialState = {
     list: [], //项目列表
     loading: false,
+    users: [],
 }
 
 //获取所有的项目列表
@@ -27,6 +28,15 @@ export const get_project_async = createAsyncThunk(
         state.dispatch(set_kanban_data(kanban))
         // 设置当前的project对象
         state.dispatch(set_current_project(res.data.data))
+    }
+)
+
+//获取user信息
+export const getUsersAsync = createAsyncThunk(
+    'project/get_users',
+    async () => {
+        const response = await axios.get('/api/users');
+        return response.data;
     }
 )
 
@@ -53,6 +63,10 @@ export const projectSlice = createSlice({
             state.list = data
             state.loading = false
         },
+        [getUsersAsync.fulfilled]: (state, res) => {
+            const data = res.payload.data;
+            state.users = data;
+        },
     }
 })
 
@@ -62,5 +76,8 @@ export const select_project_list = (state) => {
     return state.project.list
 }
 
+export const select_users = (state) => {
+    return state.project.users
+}
 
 export default projectSlice.reducer;
