@@ -1,25 +1,26 @@
-import { Divider, List, Popover, Typography } from 'antd'
+import { List, Popover, Typography } from 'antd'
+import { useSelector } from 'react-redux'
+import { select_users } from '../../../redux/slice/project'
 
 function UserPopover() {
+
+    const users = useSelector(select_users)
 
     let content = (
         <div className='project_create'>
             <Typography.Text type={'secondary'}>组员列表</Typography.Text>
-            <List>
-                <List.Item className="user_listItem">
-                    <p>高秀文</p>
-                </List.Item>
-                <List.Item className="user_listItem">
-                    <p>高秀文</p>
-                </List.Item>
-                <List.Item className="user_listItem">
-                    <p>高秀文</p>
-                </List.Item>
-                <List.Item className="user_listItem">
-                    <p>高秀文</p>
-                </List.Item>
+            <List style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                {
+                    users.map((item) => {
+                        return (
+                            <List.Item key={item.username} className="user_listItem">
+                                <p>{item.username}</p>
+                            </List.Item>
+                        )
+                    })
+                }
             </List>
-            <Divider />
+            {/* <Divider /> */}
         </div>
     )
 

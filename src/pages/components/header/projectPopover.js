@@ -1,13 +1,29 @@
 import { List, Popover } from 'antd'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { select_project_list } from '../../../redux/slice/project'
+
 
 function ProjectPopover() {
+
+    let list = useSelector(select_project_list);
+    list = list.filter((item) => {
+        return item.collect
+    })
 
     let content = (
         <div className='project_create'>
             <List>
-                <List.Item className="project_listItem">
-                    <p>物资管理项目</p>
-                </List.Item>
+                {
+                    list.map((item) => {
+                        return (
+                            <List.Item key={item._id} className="project_listItem">
+                                <Link to={`/project/${item._id}/kanban`}>{item.name}</Link>
+                            </List.Item>
+                        )
+                    })
+                }
+
             </List>
         </div>
     )
