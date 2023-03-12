@@ -2,23 +2,40 @@ import { Modal } from 'antd';
 import { Form, Input, Select } from 'antd';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { add_task, update_kanban_async } from '../../redux/slice/drop';
+import { add_task, update_kanban_async, kanban_selector, update_task } from '../../redux/slice/drop';
 import { select_task_modal_show, select_task_modal_status, set_task_modal } from '../../redux/slice/kanban';
 import { select_task_types, select_users } from '../../redux/slice/project';
 
 function CreateTaskModal() {
     const dispatch = useDispatch()
-    const { type, kanban_key } = useSelector(select_task_modal_status)
+    const { type, kanban_key, task_id } = useSelector(select_task_modal_status)
 
     const show = useSelector(select_task_modal_show)
     const users = useSelector(select_users)
     const task_types = useSelector(select_task_types);
+    const kanban_data = useSelector(kanban_selector)
+
     const [form] = Form.useForm();
 
     useEffect(() => {
         if (type === 'create' && show) {
             // 清理掉
             form.resetFields()
+        }
+        if (type === 'edit' && show) {
+            const data = kanban_data
+            const kanban = data.find((item) => {
+                return item.kanban_key === kanban_key
+            })
+
+            const task_data = kanban.task;
+
+            const task = task_data.find((item) => {
+                return item.task_id === task_id
+            })
+
+            // 设置表单
+            form.setFieldsValue(task)
         }
     }, [show])
 
@@ -35,7 +52,18 @@ function CreateTaskModal() {
                 // 更新kanban
                 dispatch(update_kanban_async())
             }
+            // 编辑
+            if (type === 'edit') {
+                dispatch(update_task({
+                    task: form_data,
+                    task_id,
+                    kanban_key
+                }))
 
+                // 更新kanban
+                dispatch(update_kanban_async())
+            }
+            //关闭弹窗
             dispatch(set_task_modal({
                 show: false
             }))

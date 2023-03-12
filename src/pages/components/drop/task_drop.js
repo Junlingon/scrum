@@ -1,11 +1,22 @@
 import { Droppable } from 'react-beautiful-dnd';
 import { Draggable } from 'react-beautiful-dnd';
 import classnames from 'classnames'
+import { set_task_modal } from '../../../redux/slice/kanban';
+import { useDispatch } from 'react-redux';
 
 function TaskDrop(props) {
     const task = props.task;
     const list = task.task
+    const dispatch = useDispatch()
 
+    function edit_task(kanban_key, task_id) {
+        dispatch(set_task_modal({
+            show: true,
+            kanban_key,
+            task_id,
+            type: 'edit'
+        }))
+    }
     return (
         // 对于每一个进度模块内部来说也相当于一个Droppable,因为里面的每一个 task 任务都是一个可拖拽的小卡片也就是Draggable
         <Droppable droppableId={task.kanban_key} type="task">
@@ -30,7 +41,7 @@ function TaskDrop(props) {
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
                                             onClick={() => {
-                                                // edit_task(task.kanban_key, item.task_id)
+                                                edit_task(task.kanban_key, item.task_id)
                                             }}
 
                                         >

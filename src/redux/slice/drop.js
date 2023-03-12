@@ -123,7 +123,8 @@ export const {
     add_kanban,
     add_task,
     set_kanban_data,
-    set_project_id
+    set_project_id,
+    update_task
 } = DropSlice.actions;
 
 export default DropSlice.reducer;//这里是reducer 没有s
