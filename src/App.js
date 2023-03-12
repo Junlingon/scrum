@@ -9,7 +9,7 @@ import Kanban from './pages/kanban';
 import Epic from './pages/epic';
 import { notification } from 'antd'
 import EventBus from './util/event'
-import { getUsersAsync, getTaskTypesAsync } from './redux/slice/project';
+import { getUsersAsync, getTaskTypesAsync, getOrgsAsync } from './redux/slice/project';
 import { useDispatch } from 'react-redux';
 
 function App() {
@@ -39,6 +39,7 @@ function App() {
     // 获取下拉框动态数据
     dispatch(getUsersAsync())
     dispatch(getTaskTypesAsync())
+    dispatch(getOrgsAsync())
   })
 
   return (

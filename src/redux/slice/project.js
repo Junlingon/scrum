@@ -8,13 +8,29 @@ const initialState = {
     loading: false,
     users: [],
     task_types: [],
+    organizations: [],
+    search_query: {},
+    total: 0,
+    current_page: 1,
+    project_modal: {
+        show: false,
+        type: 'create',
+        id: ''
+    },
 }
 
 //获取所有的项目列表
 export const getProjectListAsync = createAsyncThunk(
     'project/get_project_list',
-    async () => {
-        const response = await axios.get('/api/projects');
+    async (data, store) => {
+        const state = store.getState()
+        const skip = (state.project.current_page - 1) * 10;
+        const search_query = state.project.search_query
+
+        const response = await axios.post('/api/projects/search', {
+            ...search_query,
+            skip
+        });
         return response.data;
     }
 )
@@ -49,11 +65,44 @@ export const getTaskTypesAsync = createAsyncThunk(
     }
 )
 
+export const getOrgsAsync = createAsyncThunk(
+    'project/get_orgs',
+    async () => {
+        const response = await axios.get('/api/organization');
+        // console.log('response',response)
+        return response.data;
+    }
+)
+
 export const projectSlice = createSlice({
     name: 'project',
     initialState,
     reducers: {
+        set_project_modal: (state, action) => {
+            // state.modal_show = action.payload
 
+            state.project_modal = {
+                ...state.project_modal,
+                ...action.payload
+            }
+
+        },
+        change_list: (state, action) => {
+            const { _id, data } = action.payload;
+            const index = state.list.findIndex((item) => {
+                // debugger
+                // console.log(item)
+                return item._id === _id
+            })
+            // debugger
+            state.list[index] = data;
+        },
+        set_search_query: (state, action) => {
+            state.search_query = action.payload
+        },
+        set_current_page: (state, action) => {
+            state.current_page = action.payload
+        }
     },
     extraReducers: {
         [getProjectListAsync.pending]: (state, res) => {
@@ -61,7 +110,7 @@ export const projectSlice = createSlice({
         },
         [getProjectListAsync.fulfilled]: (state, res) => {
             const data = res.payload.data.data;
-
+            const total = res.payload.data.total;
             //后台有关，可能没有收藏这个字段
             data.forEach(element => {
                 if (typeof element.collect === 'undefined') {
@@ -71,6 +120,7 @@ export const projectSlice = createSlice({
 
             state.list = data
             state.loading = false
+            state.total = total
         },
         [getUsersAsync.fulfilled]: (state, res) => {
             const data = res.payload.data;
@@ -79,14 +129,31 @@ export const projectSlice = createSlice({
         [getTaskTypesAsync.fulfilled]: (state, res) => {
             const data = res.payload.data;
             state.task_types = data;
-        }
+        },
+        [getOrgsAsync.fulfilled]: (state, res) => {
+            // console.log('res', res)
+            const data = res.payload.data;
+            state.organizations = data;
+        },
     }
 })
 
-export const { } = projectSlice.actions;
+export const { set_current_page, set_project_modal, change_list, set_search_query } = projectSlice.actions;
 
 export const select_project_list = (state) => {
     return state.project.list
+}
+
+export const select_project_list_data = (state) => {
+    return {
+        list: state.project.list,
+        total: state.project.total,
+        current_page: state.project.current_page
+    }
+}
+
+export const select_project_modal = (state) => {
+    return state.project.project_modal
 }
 
 export const select_users = (state) => {
@@ -95,6 +162,10 @@ export const select_users = (state) => {
 
 export const select_task_types = (state) => {
     return state.project.task_types
+}
+
+export const select_orgs = (state) => {
+    return state.project.organizations
 }
 
 export default projectSlice.reducer;
