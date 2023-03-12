@@ -7,6 +7,7 @@ const initialState = {
     list: [], //项目列表
     loading: false,
     users: [],
+    task_types: [],
 }
 
 //获取所有的项目列表
@@ -39,6 +40,14 @@ export const getUsersAsync = createAsyncThunk(
         return response.data;
     }
 )
+//获取任务类型
+export const getTaskTypesAsync = createAsyncThunk(
+    'project/get_task_types',
+    async () => {
+        const response = await axios.get('/api/task/type_list');
+        return response.data;
+    }
+)
 
 export const projectSlice = createSlice({
     name: 'project',
@@ -67,6 +76,10 @@ export const projectSlice = createSlice({
             const data = res.payload.data;
             state.users = data;
         },
+        [getTaskTypesAsync.fulfilled]: (state, res) => {
+            const data = res.payload.data;
+            state.task_types = data;
+        }
     }
 })
 
@@ -78,6 +91,10 @@ export const select_project_list = (state) => {
 
 export const select_users = (state) => {
     return state.project.users
+}
+
+export const select_task_types = (state) => {
+    return state.project.task_types
 }
 
 export default projectSlice.reducer;

@@ -9,7 +9,7 @@ import Kanban from './pages/kanban';
 import Epic from './pages/epic';
 import { notification } from 'antd'
 import EventBus from './util/event'
-import { getUsersAsync } from './redux/slice/project';
+import { getUsersAsync, getTaskTypesAsync } from './redux/slice/project';
 import { useDispatch } from 'react-redux';
 
 function App() {
@@ -36,8 +36,9 @@ function App() {
       // console.log('发生错误了')
       openNotification(msg)
     })
-
+    // 获取下拉框动态数据
     dispatch(getUsersAsync())
+    dispatch(getTaskTypesAsync())
   })
 
   return (
