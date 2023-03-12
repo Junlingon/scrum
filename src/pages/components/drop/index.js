@@ -81,7 +81,7 @@ function DropCp() {
                     >
                         {drag_data.map((item, index) => {
                             return (
-                                <Draggable key={item.kanban_key} draggableId={item.kanban_key} index={index}>
+                                <Draggable key={'Drag_' + item.kanban_key} draggableId={'droppable' + item.kanban_key} index={index}>
                                     {(provided, snapshot) => {
                                         return (
                                             <div

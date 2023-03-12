@@ -19,7 +19,7 @@ function TaskDrop(props) {
     }
     return (
         // 对于每一个进度模块内部来说也相当于一个Droppable,因为里面的每一个 task 任务都是一个可拖拽的小卡片也就是Draggable
-        <Droppable droppableId={task.kanban_key} type="task">
+        <Droppable droppableId={'task' + task.kanban_key} type="task">
             {(provided, snapshot) => (
                 <div
                     className='task_drop_wrap'

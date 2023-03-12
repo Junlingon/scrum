@@ -1,13 +1,10 @@
-import { Input, Select, Form, Button } from 'antd'
-import axios from 'axios';
+import { Input, Select, Form, Button } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { getProjectListAsync, select_orgs, select_users, set_current_page, set_search_query } from '../../redux/slice/project';
 
 
 function ProjectSearch() {
-
-    // console.log('项目搜索框 render')
 
     const dispatch = useDispatch()
 

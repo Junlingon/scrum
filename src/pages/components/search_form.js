@@ -39,7 +39,7 @@ function SearchForm() {
 
     function render_users_options(arr) {
         return arr.map((item) => {
-            return <Select.Option key={item.username} value={item.username}>{item.username}</Select.Option>
+            return <Select.Option key={'SelectOp_' + item.username} value={item.username}>{item.username}</Select.Option>
         })
     }
 
