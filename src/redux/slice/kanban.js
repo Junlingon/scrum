@@ -40,6 +40,10 @@ export const select_task_modal_show = (state) => {
     return state.kanban.task_modal_status.show
 }
 
+export const select_epic_list = (state) => {
+    return state.kanban.current_project.epic
+}
+
 export const { set_current_project, set_task_modal } = kanbanSlice.actions;
 
 export default kanbanSlice.reducer;
