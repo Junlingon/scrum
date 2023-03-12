@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { get_project_async } from '../redux/slice/project';
 import { select_current_project } from '../redux/slice/kanban';
 import { set_project_id } from '../redux/slice/drop';
+import CreateTaskModal from './components/create_task_modal'
 
 function Kanban() {
     const params = useParams()
@@ -29,6 +30,7 @@ function Kanban() {
             <div className='drop_wrap'>
                 <DropCp />
             </div>
+            <CreateTaskModal />
         </div>
     )
 }

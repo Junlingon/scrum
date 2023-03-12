@@ -4,7 +4,8 @@ import './drop.css'
 import { Button, Input } from 'antd';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { kanban_order, kanban_selector, task_same_order, task_diff_order, add_task, update_kanban_async, add_kanban } from '../../../redux/slice/drop';
+import { kanban_order, kanban_selector, task_same_order, task_diff_order, update_kanban_async, add_kanban } from '../../../redux/slice/drop';
+import { set_task_modal } from '../../../redux/slice/kanban';
 
 function DropCp() {
     const drag_data = useSelector(kanban_selector)
@@ -60,14 +61,10 @@ function DropCp() {
     }
 
     function new_task_click(kanban_key) {
-        dispatch(add_task({
-            task: {
-                "name": '新增',
-                "type": "bug",
-                "owner": 'azaaer',
-                "task_id": '3adakhkhc'
-            },
+        dispatch(set_task_modal({
+            show: true,
             kanban_key,
+            type: 'create'
         }))
     }
     return (

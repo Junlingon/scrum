@@ -125,4 +125,5 @@ export const {
     set_kanban_data,
     set_project_id
 } = DropSlice.actions;
+
 export default DropSlice.reducer;//这里是reducer 没有s
