@@ -36,11 +36,15 @@ function App() {
       // console.log('发生错误了')
       openNotification(msg)
     })
+    //没有登录
+    EventBus.on("global_not_login", function (msg) {
+      navigate('/login')
+    })
     // 获取下拉框动态数据
     dispatch(getUsersAsync())
     dispatch(getTaskTypesAsync())
     dispatch(getOrgsAsync())
-  })
+  }, [])
 
   return (
     <div className="App">
