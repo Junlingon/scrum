@@ -1,18 +1,15 @@
 import { Input, Select, Form, Button } from 'antd';
 import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { getProjectListAsync, select_orgs, select_users, set_current_page, set_search_query } from '../../redux/slice/project';
+import { getProjectListAsync, set_current_page, set_search_query } from '../../redux/slice/project';
+import useSelectOptions from './Hooks/useSelectOptions';
 
 
 function ProjectSearch() {
 
     const dispatch = useDispatch()
-
-    const orgs = useSelector(select_orgs)
-    const users = useSelector(select_users)
+    const { orgs_options, users_options } = useSelectOptions()
 
     const [form] = Form.useForm();
-
 
     async function search_click() {
         const form_data = await form.validateFields()
@@ -26,20 +23,6 @@ function ProjectSearch() {
     function reset() {
         form.resetFields()
     }
-
-    const orgs_options = orgs.map((item) => {
-        return {
-            value: item.name,
-            label: item.name
-        }
-    })
-
-    const users_options = users.map((item) => {
-        return {
-            value: item.username,
-            label: item.username
-        }
-    })
 
     return (
         <Form layout="inline" form={form} >

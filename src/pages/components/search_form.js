@@ -1,23 +1,23 @@
 import { Button, Input, Select, Form } from 'antd'
 import axios from '../../util/http';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { set_kanban_data } from '../../redux/slice/drop';
-import { select_users } from '../../redux/slice/project';
-import { select_epic_list } from '../../redux/slice/kanban';
 import { useEffect } from 'react';
+import useSelectOptions from './Hooks/useSelectOptions';
 
 function SearchForm() {
     const dispatch = useDispatch()
-    const [search_params] = useSearchParams()
 
     const [form] = Form.useForm();
-    const search_epic = search_params.get('epic');
-    const users = useSelector(select_users);
-    const params = useParams()
-    const epic_list = useSelector(select_epic_list) || []
 
+    const [search_params] = useSearchParams()
+    const search_epic = search_params.get('epic');
+
+    const params = useParams()
     const project_id = params.id
+
+    const { task_options, users_options, epic_options } = useSelectOptions()
 
     useEffect(() => {
         // 看有没有epic查询参数，有的话就查询数据
@@ -35,20 +35,6 @@ function SearchForm() {
             }, 500);
         }
     }, [])
-
-
-    function render_users_options(arr) {
-        return arr.map((item) => {
-            return <Select.Option key={'SelectOp_' + item.username} value={item.username}>{item.username}</Select.Option>
-        })
-    }
-
-    const epic_options = epic_list.map((key) => {
-        return {
-            value: key,
-            label: key
-        }
-    })
 
     function reset() {
         form.resetFields()
@@ -118,10 +104,7 @@ function SearchForm() {
                 name="owner"
                 style={{ width: 200 }}
             >
-                <Select className='search_wrap_select'>
-                    {
-                        render_users_options(users)
-                    }
+                <Select className='search_wrap_select' options={users_options}>
                 </Select>
             </Form.Item>
             <Form.Item
@@ -131,16 +114,7 @@ function SearchForm() {
             >
                 <Select
                     className='search_wrap_select'
-                    options={[
-                        {
-                            value: 'task',
-                            label: 'task',
-                        },
-                        {
-                            value: 'bug',
-                            label: 'bug',
-                        },
-                    ]}
+                    options={task_options}
                 />
             </Form.Item>
             <Form.Item
