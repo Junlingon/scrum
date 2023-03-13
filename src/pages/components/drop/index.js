@@ -2,14 +2,39 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import TaskDrop from './task_drop';
 import './drop.css'
 import { Button, Input } from 'antd';
-import React from 'react';
+import React, { useTransition, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { kanban_order, kanban_selector, task_same_order, task_diff_order, update_kanban_async, add_kanban } from '../../../redux/slice/drop';
 import { set_task_modal } from '../../../redux/slice/kanban';
 
 function DropCp() {
+
     const drag_data = useSelector(kanban_selector)
     const dispatch = useDispatch()
+
+    //数据过多时候的渲染优化
+    // const [isPending, startTransition] = useTransition();
+    // const [drag_data, setData] = useState([]);
+    // useEffect(() => {
+    //     startTransition(() => {
+    //         let data = []
+    //         for (let i = 0; i < 100; i++) {
+    //             let task = []
+    //             for (let j = 0; j < 30; j++) {
+    //                 task.push({
+    //                     name: `${i}_${j}`,
+    //                     owner: `${i}_${j}`,
+    //                     type: 'bug'
+    //                 })
+    //             }
+    //             data.push({
+    //                 kanban_key: `${i}`,
+    //                 task
+    //             })
+    //         }
+    //         setData(data)
+    //     });
+    // }, []);
 
     function onDragEnd(e) {
         // console.log(e)
@@ -47,7 +72,6 @@ function DropCp() {
         }
     }
 
-
     function input_keydown(e) {
         const value = e.target.value.trim();
         if (!value) {
@@ -67,6 +91,12 @@ function DropCp() {
             type: 'create'
         }))
     }
+
+
+    // if (isPending) {
+    //     return <div>Loading...</div>;
+    // }
+
     return (
         <DragDropContext
             onDragEnd={onDragEnd}

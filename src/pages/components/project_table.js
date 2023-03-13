@@ -115,6 +115,7 @@ function ProjectTable() {
         dispatch(set_current_page(page));
         dispatch(getProjectListAsync())
     }
+
     return (
         <>
             <Table
