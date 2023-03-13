@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { set_project_modal } from '../redux/slice/project'
 
 function Project() {
-
+    console.log('project render')
     const dispatch = useDispatch()
 
     function create_project_click() {

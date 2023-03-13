@@ -138,7 +138,7 @@ export const select_project_list = (state) => {
 }
 
 export const select_project_list_data = (state) => {
-    return {
+    return {   //每次都返回的是一个新对象 
         list: state.project.list,
         total: state.project.total,
         current_page: state.project.current_page

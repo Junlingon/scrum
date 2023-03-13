@@ -1,5 +1,5 @@
 import { Button, Space, Table, Pagination } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { getProjectListAsync, select_project_list, select_project_list_data, set_current_page, change_list, set_project_modal } from '../../redux/slice/project';
 import { useEffect } from 'react';
@@ -103,13 +103,13 @@ const columns = [
 
 function ProjectTable() {
     const dispatch = useDispatch()
-
+    console.log('项目列表 render') //打印了6次
     useEffect(() => {
         dispatch(getProjectListAsync())
     }, [])
 
     const data = useSelector(select_project_list)
-    const total = useSelector(select_project_list_data).total
+    const total = useSelector(select_project_list_data, shallowEqual).total
 
     function onChange(page) {
         dispatch(set_current_page(page));

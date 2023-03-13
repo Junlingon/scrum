@@ -13,6 +13,7 @@ import { getUsersAsync, getTaskTypesAsync, getOrgsAsync } from './redux/slice/pr
 import { useDispatch } from 'react-redux';
 
 function App() {
+  console.log('app render')
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
