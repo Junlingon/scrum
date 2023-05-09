@@ -1,18 +1,20 @@
 import React from 'react'
 import { Form, Input, Button, Divider } from 'antd'
 import LoginWrap from './components/login_wrap'
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import axios from '../util/http'
 
 function Register() {
-
+    const navigate = useNavigate();
     const [form] = Form.useForm();
 
     async function register_click() {
         const form_data = await form.validateFields()
         if (form_data) {
             console.log(form_data);
-            axios.post('/api/register', form_data)
+            axios.post('/api/register', form_data).then(() => {
+                navigate('/login');
+            })
         }
     }
 
