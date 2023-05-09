@@ -30,6 +30,7 @@ function Kanban() {
             </div>
             <div className='drop_wrap'>
                 <DropCp />
+                {/* <DndPro /> */}
             </div>
             <CreateTaskModal />
         </div>
