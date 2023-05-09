@@ -11,7 +11,7 @@ function DropCp() {
 
     const drag_data = useSelector(kanban_selector)
     const dispatch = useDispatch()
-
+    const [value, setValue] = useState('');
     //数据过多时候的渲染优化
     // const [isPending, startTransition] = useTransition();
     // const [drag_data, setData] = useState([]);
@@ -81,7 +81,7 @@ function DropCp() {
             kanban_key: value
         }))
         dispatch(update_kanban_async())
-        e.target.value = ''
+        setValue('')
     }
 
     function new_task_click(kanban_key) {
@@ -139,7 +139,7 @@ function DropCp() {
                 )}
             </Droppable>
             <div className='kanban_drag_wrap'>
-                <Input placeholder="新建看板名称" onPressEnter={input_keydown} />
+                <Input placeholder="新建看板名称" onPressEnter={input_keydown} value={value} onChange={(e) => { setValue(e.target.value) }} />
             </div>
         </DragDropContext>
     )
