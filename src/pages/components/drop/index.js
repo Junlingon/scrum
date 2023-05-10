@@ -121,7 +121,12 @@ function DropCp() {
                                                 {...provided.dragHandleProps}
 
                                             >
-                                                <h1>{item.kanban_key}</h1>
+                                                <h1 style={{
+                                                    textAlign: 'initial',
+                                                    fontWeight: '400',
+                                                    fontSize: 'x-large',
+                                                    color: '#58667f'
+                                                }}>{item.kanban_key}</h1>
                                                 <TaskDrop task={item} />
                                                 <Button className='new_task_btn' onClick={() => {
                                                     new_task_click(item.kanban_key)

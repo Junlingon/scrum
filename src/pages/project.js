@@ -19,7 +19,7 @@ function Project() {
         <div className='project_body_wrap'>
             <div className='project_title_wrap'>
                 <h1>项目列表</h1>
-                <button onClick={create_project_click}>创建项目</button>
+                <button onClick={create_project_click}>创建项目+</button>
             </div>
             <div className='project_search_wrap'>
                 <ProjectSearch />
