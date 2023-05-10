@@ -21,7 +21,7 @@ function Login() {
             .signInWithEmailAndPassword(email, password)
             .then((loginState) => {
                 // 登录成功
-                axios.post('/api/login', form_data)
+                return axios.post('/api/login', form_data)
             })
             .then((res) => {
                 if (res.data.code === 0) {
