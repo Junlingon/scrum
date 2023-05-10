@@ -4,13 +4,15 @@ import LoginWrap from './components/login_wrap'
 import { Link, useNavigate } from "react-router-dom"
 import axios from '../util/http'
 import cloudbase from "@cloudbase/js-sdk";
+import { getUsersAsync, getTaskTypesAsync, getOrgsAsync } from '../redux/slice/project';
+import { useDispatch } from 'react-redux';
 
 const app = cloudbase.init({
     env: "scrum-nodejs-9gh5bh6zf5e922f1"
 });
 
 function Login() {
-
+    const dispatch = useDispatch()
     const [form] = Form.useForm();
     const navigate = useNavigate()
 
@@ -26,6 +28,10 @@ function Login() {
             .then((res) => {
                 if (res.data.code === 0) {
                     navigate('/project')
+                    // 获取下拉框动态数据
+                    dispatch(getUsersAsync())
+                    dispatch(getTaskTypesAsync())
+                    dispatch(getOrgsAsync())
                 }
             })
             .catch((err) => {

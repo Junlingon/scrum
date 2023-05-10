@@ -9,15 +9,11 @@ import Kanban from './pages/kanban';
 import Epic from './pages/epic';
 import { notification } from 'antd'
 import EventBus from './util/event'
-import { getUsersAsync, getTaskTypesAsync, getOrgsAsync } from './redux/slice/project';
-import { useDispatch } from 'react-redux';
 
 function App() {
   console.log('app render')
   const location = useLocation()
   const navigate = useNavigate()
-  const dispatch = useDispatch()
-
   const [api, contextHolder] = notification.useNotification()
 
   //错误弹窗提示方法
@@ -41,10 +37,6 @@ function App() {
     EventBus.on("global_not_login", function (msg) {
       navigate('/login')
     })
-    // 获取下拉框动态数据
-    dispatch(getUsersAsync())
-    dispatch(getTaskTypesAsync())
-    dispatch(getOrgsAsync())
   }, [])
 
   return (
