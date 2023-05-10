@@ -1,8 +1,9 @@
-import React from 'react'
-import { Form, Input, Button, Divider } from 'antd'
-import LoginWrap from './components/login_wrap'
-import { Link, useNavigate } from "react-router-dom"
-import axios from '../util/http'
+import React from 'react';
+import { Form, Input, Button, Divider, Modal, notification } from 'antd';
+import { ExclamationCircleFilled } from '@ant-design/icons';
+import LoginWrap from './components/login_wrap';
+import { Link, useNavigate } from "react-router-dom";
+import axios from '../util/http';
 import cloudbase from "@cloudbase/js-sdk";
 
 const app = cloudbase.init({
@@ -12,22 +13,42 @@ const app = cloudbase.init({
 function Register() {
     const navigate = useNavigate();
     const [form] = Form.useForm();
-
+    const { confirm } = Modal;
 
     async function register_click() {
         const form_data = await form.validateFields()
-        const { username, password, email } = form_data
-        // if (form_data) {
-        //     console.log(form_data);
-        //     axios.post('/api/register', form_data).then(() => {
-        //         navigate('/login');
-        //     })
-        // }
-        app
-            .auth()
+        const { password, email } = form_data
+        const showConfirm = () => {
+            confirm({
+                title: '请在你的邮箱中点击链接确定注册！',
+                icon: <ExclamationCircleFilled />,
+                content: '否则注册失败',
+                okText: '链接已确认',
+                cancelText: '取消',
+                onOk() {
+                    console.log('链接已确认');
+                    if (form_data) {
+                        console.log(form_data);
+                        axios.post('/api/register', form_data).then(() => {
+                            navigate('/login');
+                        })
+                    }
+                },
+                onCancel() { },
+            });
+        };
+
+        app.auth()
             .signUpWithEmailAndPassword(email, password)
             .then(() => {
                 console.log('已发送短信验证码')
+                showConfirm()
+            })
+            .catch((e) => {
+                console.log(e.message)
+                notification.error({
+                    message: e.message,
+                });
             });
     }
 
