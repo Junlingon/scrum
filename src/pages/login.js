@@ -1,8 +1,13 @@
 import React from 'react'
-import { Form, Input, Button, Divider } from 'antd'
+import { Form, Input, Button, Divider, notification } from 'antd'
 import LoginWrap from './components/login_wrap'
 import { Link, useNavigate } from "react-router-dom"
 import axios from '../util/http'
+import cloudbase from "@cloudbase/js-sdk";
+
+const app = cloudbase.init({
+    env: "scrum-nodejs-9gh5bh6zf5e922f1"
+});
 
 function Login() {
 
@@ -11,24 +16,30 @@ function Login() {
 
     async function login_click() {
         const form_data = await form.validateFields()
+        const { password, email } = form_data
+        app.auth()
+            .signInWithEmailAndPassword(email, password)
+            .then((loginState) => {
+                // 登录成功
+                axios.post('/api/login', form_data)
+            })
+            .then((res) => {
+                if (res.data.code === 0) {
+                    navigate('/project')
+                }
+            })
+            .catch((err) => {
+                notification.error({ message: err.message })
+            });
 
-        if (form_data) {
-            console.log(form_data)
-            const res = await axios.post('/api/login', form_data)
-
-            // 登录成功
-            if (res.data.code === 0) {
-                navigate('/project')
-            }
-        }
     }
 
     return (
         <LoginWrap>
             <Form form={form}>
                 登录界面
-                <Form.Item name="username" rules={[{ required: true, message: '请输入用户名' }]}>
-                    <Input type="text" id="username" placeholder={'用户名'} />
+                <Form.Item name="email" rules={[{ required: true, message: '请输入邮箱' }]}>
+                    <Input type="text" id="email" placeholder={'邮箱'} />
                 </Form.Item>
                 <Form.Item name="password" rules={[{ required: true, message: '请输入密码' }]}>
                     < Input type="password" id="password" placeholder={'密码'} />
