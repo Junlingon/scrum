@@ -9,9 +9,12 @@ import Kanban from './pages/kanban';
 import Epic from './pages/epic';
 import { notification } from 'antd'
 import EventBus from './util/event'
+import { getUsersAsync, getTaskTypesAsync, getOrgsAsync } from './redux/slice/project';
+import { useDispatch } from 'react-redux';
 
 function App() {
   console.log('app render')
+  const dispatch = useDispatch()
   const location = useLocation()
   const navigate = useNavigate()
   const [api, contextHolder] = notification.useNotification()
@@ -27,6 +30,9 @@ function App() {
   useEffect(() => {
     if (location.pathname === '/') {
       navigate('/project')
+      dispatch(getUsersAsync())
+      dispatch(getTaskTypesAsync())
+      dispatch(getOrgsAsync())
     }
 
     EventBus.on("global_error_tips", function (msg) {
