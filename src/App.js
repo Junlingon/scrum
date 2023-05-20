@@ -30,9 +30,6 @@ function App() {
   useEffect(() => {
     if (location.pathname === '/') {
       navigate('/project')
-      dispatch(getUsersAsync())
-      dispatch(getTaskTypesAsync())
-      dispatch(getOrgsAsync())
     }
 
     EventBus.on("global_error_tips", function (msg) {
@@ -43,6 +40,10 @@ function App() {
     EventBus.on("global_not_login", function (msg) {
       navigate('/login')
     })
+
+    dispatch(getUsersAsync())
+    dispatch(getTaskTypesAsync())
+    dispatch(getOrgsAsync())
   }, [])
 
   return (
